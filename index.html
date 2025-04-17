@@ -1,0 +1,236 @@
+<!DOCTYPE html><html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Измерительная игра</title>
+  <style>
+    :root {
+      --primary-color: #111111;
+      --accent-color: #4f8cff;
+      --bg-color: #f8f8f8;
+      --text-color: #333;
+      --radius: 10px;
+      --font: 'Helvetica Neue', sans-serif;
+    }body {
+  font-family: var(--font);
+  background: var(--bg-color);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+}
+
+.container {
+  max-width: 640px;
+  margin: 60px auto;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: var(--primary-color);
+}
+
+.question {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.answers button {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 10px 0;
+  background-color: #ffffff;
+  color: var(--text-color);
+  border: 2px solid var(--accent-color);
+  border-radius: var(--radius);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.answers button:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.result {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.btn-action {
+  padding: 12px 24px;
+  margin-top: 20px;
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: none;
+}
+
+.btn-action:hover {
+  background-color: #2a6de0;
+}
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Измерительная игра</h1>
+  <div id="game">
+    <div class="question" id="question"></div>
+    <div class="answers" id="answers"></div>
+    <div class="result" id="result"></div>
+    <button class="btn-action" id="nextButton" onclick="nextQuestion()">Следующий вопрос</button>
+    <button class="btn-action" id="startLevel2" onclick="startLevel(2)">Перейти ко 2 уровню</button>
+    <button class="btn-action" id="startLevel3" onclick="startLevel(3)">Перейти к 3 уровню</button>
+    <button class="btn-action" id="restartButton" onclick="restartGame()">Пройти заново</button>
+  </div>
+</div><script>
+  const questions = {
+    1: [
+      {
+        question: "Какой предмет, скорее всего, имеет длину около 15 см?",
+        options: ["Дверь", "Книга", "Холодильник"],
+        correct: 1
+      },
+      {
+        question: "Сколько миллиметров в одном сантиметре?",
+        options: ["10 мм", "100 мм", "1 мм"],
+        correct: 0
+      },
+      {
+        question: "Что больше: 1 метр или 100 сантиметров?",
+        options: ["Одинаково", "1 метр больше", "100 см больше"],
+        correct: 0
+      }
+    ],
+    2: [
+      {
+        question: "Выбери, что может быть высотой около 1 метра:",
+        options: ["Карандаш", "Стул", "Тетрадь"],
+        correct: 1
+      },
+      {
+        question: "15 см = ? мм",
+        options: ["150 мм", "15 мм", "1.5 мм"],
+        correct: 0
+      },
+      {
+        question: "Как измерить длину стола?",
+        options: ["Литрами", "Килограммами", "Метровой лентой"],
+        correct: 2
+      }
+    ],
+    3: [
+      {
+        question: "Предмет длиной 2.5 метра. Сколько это сантиметров?",
+        options: ["250 см", "25 см", "2.5 см"],
+        correct: 0
+      },
+      {
+        question: "Ты нарисовал отрезок в 8 см. Какая длина будет в мм?",
+        options: ["800 мм", "80 мм", "8 мм"],
+        correct: 1
+      },
+      {
+        question: "На какой шкале лучше измерить рост человека?",
+        options: ["Линейка 15 см", "Метровая лента", "Весы"],
+        correct: 1
+      }
+    ]
+  };
+
+  let currentLevel = 1;
+  let currentQuestion = 0;
+  let score = 0;
+  let progress = {
+    1: 0,
+    2: 0,
+    3: 0
+  };
+
+  function loadQuestion() {
+    const q = questions[currentLevel][currentQuestion];
+    document.getElementById('question').innerText = Уровень ${currentLevel}, вопрос ${currentQuestion + 1}: ${q.question};
+    const answersDiv = document.getElementById('answers');
+    answersDiv.innerHTML = '';
+    q.options.forEach((opt, index) => {
+      const btn = document.createElement('button');
+      btn.innerText = opt;
+      btn.onclick = () => checkAnswer(index);
+      answersDiv.appendChild(btn);
+    });
+    document.getElementById('result').innerText = '';
+    hideAllActions();
+  }
+
+  function checkAnswer(selected) {
+    const correct = questions[currentLevel][currentQuestion].correct;
+    const result = document.getElementById('result');
+    if (selected === correct) {
+      result.innerText = 'Правильно!';
+      score++;
+      progress[currentLevel]++;
+    } else {
+      result.innerText = 'Неправильно...';
+    }
+    document.getElementById('nextButton').style.display = 'inline-block';
+  }
+
+  function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion < questions[currentLevel].length) {
+      loadQuestion();
+    } else {
+      showLevelResult();
+    }
+  }
+
+  function showLevelResult() {
+    document.getElementById('question').innerText = Ты завершил уровень ${currentLevel}! Правильных ответов: ${progress[currentLevel]} из ${questions[currentLevel].length};
+    document.getElementById('answers').innerHTML = '';
+    document.getElementById('nextButton').style.display = 'none';
+    if (currentLevel === 1) document.getElementById('startLevel2').style.display = 'inline-block';
+    if (currentLevel === 2) document.getElementById('startLevel3').style.display = 'inline-block';
+    if (currentLevel === 3) {
+      document.getElementById('result').innerText = Игра завершена! Общее количество правильных ответов: ${progress[1] + progress[2] + progress[3]} из 9;
+      document.getElementById('restartButton').style.display = 'inline-block';
+    }
+  }
+
+  function startLevel(level) {
+    currentLevel = level;
+    currentQuestion = 0;
+    hideAllActions();
+    loadQuestion();
+  }
+
+  function restartGame() {
+    currentLevel = 1;
+    currentQuestion = 0;
+    score = 0;
+    progress = { 1: 0, 2: 0, 3: 0 };
+    hideAllActions();
+    loadQuestion();
+  }
+
+  function hideAllActions() {
+    document.getElementById('startLevel2').style.display = 'none';
+    document.getElementById('startLevel3').style.display = 'none';
+    document.getElementById('restartButton').style.display = 'none';
+    document.getElementById('nextButton').style.display = 'none';
+  }
+
+  loadQuestion();
+</script></body>
+</html>
