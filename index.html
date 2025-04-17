@@ -1,101 +1,61 @@
-<!DOCTYPE html><html lang="ru">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Измерительная игра</title>
   <style>
-    :root {
-      --primary-color: #111111;
-      --accent-color: #4f8cff;
-      --bg-color: #f8f8f8;
-      --text-color: #333;
-      --radius: 10px;
-      --font: 'Helvetica Neue', sans-serif;
-    }body {
-  font-family: var(--font);
-  background: var(--bg-color);
-  margin: 0;
-  padding: 0;
-  color: var(--text-color);
-}
-
-.container {
-  max-width: 640px;
-  margin: 60px auto;
-  padding: 40px;
-  background: #ffffff;
-  border-radius: var(--radius);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-h1 {
-  font-size: 28px;
-  margin-bottom: 30px;
-  color: var(--primary-color);
-}
-
-.question {
-  font-size: 20px;
-  font-weight: 500;
-  margin-bottom: 20px;
-}
-
-.answers button {
-  display: block;
-  width: 100%;
-  padding: 12px 20px;
-  margin: 10px 0;
-  background-color: #ffffff;
-  color: var(--text-color);
-  border: 2px solid var(--accent-color);
-  border-radius: var(--radius);
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.answers button:hover {
-  background-color: var(--accent-color);
-  color: white;
-}
-
-.result {
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
-.btn-action {
-  padding: 12px 24px;
-  margin-top: 20px;
-  background-color: var(--accent-color);
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: var(--radius);
-  cursor: pointer;
-  display: none;
-}
-
-.btn-action:hover {
-  background-color: #2a6de0;
-}
-
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 12px;
+    }
+    h1 {
+      color: #333;
+    }
+    .question {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #0088cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .options button:hover {
+      background-color: #005577;
+    }
+    .result {
+      font-size: 18px;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
-<div class="container">
-  <h1>Измерительная игра</h1>
-  <div id="game">
+  <div class="container">
+    <h1>Измерительная игра</h1>
     <div class="question" id="question"></div>
-    <div class="answers" id="answers"></div>
+    <div class="options" id="options"></div>
     <div class="result" id="result"></div>
-    <button class="btn-action" id="nextButton" onclick="nextQuestion()">Следующий вопрос</button>
-    <button class="btn-action" id="startLevel2" onclick="startLevel(2)">Перейти ко 2 уровню</button>
-    <button class="btn-action" id="startLevel3" onclick="startLevel(3)">Перейти к 3 уровню</button>
-    <button class="btn-action" id="restartButton" onclick="restartGame()">Пройти заново</button>
   </div>
-</div><script>
+  <script>
+
   const questions = {
     1: [
       {
@@ -231,6 +191,9 @@ h1 {
     document.getElementById('nextButton').style.display = 'none';
   }
 
-  loadQuestion();
+  window.onload = () => {
+      loadQuestion();
+    };
+
 </script></body>
 </html>
