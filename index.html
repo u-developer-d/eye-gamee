@@ -55,145 +55,41 @@
     <div class="result" id="result"></div>
   </div>
   <script>
+    const questions = [
+      { q: "Какой предмет может быть длиной 15 см?", o: ["Стол", "Карандаш", "Кровать"], a: 1 },
+      { q: "Что из этого около 1 метра?", o: ["Линейка", "Дверь", "Смартфон"], a: 1 },
+      { q: "Что из этого ближе всего к 5 см?", o: ["Монета", "Стул", "Книга"], a: 0 }
+    ];
+    let current = 0;
+    let score = 0;
 
-  const questions = {
-    1: [
-      {
-        question: "Какой предмет, скорее всего, имеет длину около 15 см?",
-        options: ["Дверь", "Книга", "Холодильник"],
-        correct: 1
-      },
-      {
-        question: "Сколько миллиметров в одном сантиметре?",
-        options: ["10 мм", "100 мм", "1 мм"],
-        correct: 0
-      },
-      {
-        question: "Что больше: 1 метр или 100 сантиметров?",
-        options: ["Одинаково", "1 метр больше", "100 см больше"],
-        correct: 0
+    function loadQuestion() {
+      if (current >= questions.length) {
+        document.getElementById("result").innerText = `Вы ответили правильно на ${score} из ${questions.length} вопросов.`;
+        document.getElementById("question").innerText = "";
+        document.getElementById("options").innerHTML = "";
+        return;
       }
-    ],
-    2: [
-      {
-        question: "Выбери, что может быть высотой около 1 метра:",
-        options: ["Карандаш", "Стул", "Тетрадь"],
-        correct: 1
-      },
-      {
-        question: "15 см = ? мм",
-        options: ["150 мм", "15 мм", "1.5 мм"],
-        correct: 0
-      },
-      {
-        question: "Как измерить длину стола?",
-        options: ["Литрами", "Килограммами", "Метровой лентой"],
-        correct: 2
-      }
-    ],
-    3: [
-      {
-        question: "Предмет длиной 2.5 метра. Сколько это сантиметров?",
-        options: ["250 см", "25 см", "2.5 см"],
-        correct: 0
-      },
-      {
-        question: "Ты нарисовал отрезок в 8 см. Какая длина будет в мм?",
-        options: ["800 мм", "80 мм", "8 мм"],
-        correct: 1
-      },
-      {
-        question: "На какой шкале лучше измерить рост человека?",
-        options: ["Линейка 15 см", "Метровая лента", "Весы"],
-        correct: 1
-      }
-    ]
-  };
 
-  let currentLevel = 1;
-  let currentQuestion = 0;
-  let score = 0;
-  let progress = {
-    1: 0,
-    2: 0,
-    3: 0
-  };
-
-  function loadQuestion() {
-    const q = questions[currentLevel][currentQuestion];
-    document.getElementById('question').innerText = Уровень ${currentLevel}, вопрос ${currentQuestion + 1}: ${q.question};
-    const answersDiv = document.getElementById('answers');
-    answersDiv.innerHTML = '';
-    q.options.forEach((opt, index) => {
-      const btn = document.createElement('button');
-      btn.innerText = opt;
-      btn.onclick = () => checkAnswer(index);
-      answersDiv.appendChild(btn);
-    });
-    document.getElementById('result').innerText = '';
-    hideAllActions();
-  }
-
-  function checkAnswer(selected) {
-    const correct = questions[currentLevel][currentQuestion].correct;
-    const result = document.getElementById('result');
-    if (selected === correct) {
-      result.innerText = 'Правильно!';
-      score++;
-      progress[currentLevel]++;
-    } else {
-      result.innerText = 'Неправильно...';
+      const q = questions[current];
+      document.getElementById("question").innerText = q.q;
+      const options = document.getElementById("options");
+      options.innerHTML = "";
+      q.o.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.onclick = () => {
+          if (idx === q.a) score++;
+          current++;
+          loadQuestion();
+        };
+        options.appendChild(btn);
+      });
     }
-    document.getElementById('nextButton').style.display = 'inline-block';
-  }
 
-  function nextQuestion() {
-    currentQuestion++;
-    if (currentQuestion < questions[currentLevel].length) {
-      loadQuestion();
-    } else {
-      showLevelResult();
-    }
-  }
-
-  function showLevelResult() {
-    document.getElementById('question').innerText = Ты завершил уровень ${currentLevel}! Правильных ответов: ${progress[currentLevel]} из ${questions[currentLevel].length};
-    document.getElementById('answers').innerHTML = '';
-    document.getElementById('nextButton').style.display = 'none';
-    if (currentLevel === 1) document.getElementById('startLevel2').style.display = 'inline-block';
-    if (currentLevel === 2) document.getElementById('startLevel3').style.display = 'inline-block';
-    if (currentLevel === 3) {
-      document.getElementById('result').innerText = Игра завершена! Общее количество правильных ответов: ${progress[1] + progress[2] + progress[3]} из 9;
-      document.getElementById('restartButton').style.display = 'inline-block';
-    }
-  }
-
-  function startLevel(level) {
-    currentLevel = level;
-    currentQuestion = 0;
-    hideAllActions();
-    loadQuestion();
-  }
-
-  function restartGame() {
-    currentLevel = 1;
-    currentQuestion = 0;
-    score = 0;
-    progress = { 1: 0, 2: 0, 3: 0 };
-    hideAllActions();
-    loadQuestion();
-  }
-
-  function hideAllActions() {
-    document.getElementById('startLevel2').style.display = 'none';
-    document.getElementById('startLevel3').style.display = 'none';
-    document.getElementById('restartButton').style.display = 'none';
-    document.getElementById('nextButton').style.display = 'none';
-  }
-
-  window.onload = () => {
+    window.onload = () => {
       loadQuestion();
     };
-
-</script></body>
+  </script>
+</body>
 </html>
