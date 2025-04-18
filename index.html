@@ -189,7 +189,7 @@
   function loadQuestion() {
     const questions = allQuestions[level];
     if (current >= questions.length) {
-      document.getElementById("result").innerText = Вы прошли уровень ${level}. Правильных ответов: ${score} из ${questions.length}.;
+      document.getElementById("result").innerText = `Вы прошли уровень ${level}. Правильных ответов: ${score} из ${questions.length}.`;
       document.getElementById("question").innerText = "";
       document.getElementById("options").innerHTML = "";
       document.getElementById("image-wrapper").innerHTML = "";
