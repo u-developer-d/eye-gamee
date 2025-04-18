@@ -12,37 +12,40 @@
       text-align: center;
     }
     .container {
-      max-width: 1400px;
+      max-width: 900px;
       margin: 0 auto;
       background: #fff;
       padding: 30px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       border-radius: 12px;
-      font-size: 38px;
     }
-    h1 {
+    h1, h2 {
       color: #333;
     }
     .question {
       font-size: 20px;
       margin: 20px 0;
     }
+    .image-wrapper img {
+      max-width: 100%;
+      height: auto;
+      margin: 15px 0;
+      border-radius: 8px;
+    }
     .options {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
       justify-content: center;
+      gap: 20px;
     }
     .options button {
-      display: inline-block;
-      width: auto;
-      margin: 30px 0;
-      padding: 10px;
       background-color: #0088cc;
       color: white;
       border: none;
+      padding: 12px 20px;
       border-radius: 8px;
       cursor: pointer;
+      font-size: 16px;
       transition: background-color 0.3s ease;
     }
     .options button:hover {
@@ -52,36 +55,174 @@
       font-size: 18px;
       margin-top: 20px;
     }
+    .level-select button {
+      padding: 12px 20px;
+      margin: 10px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .level-select button:hover {
+      background-color: #388E3C;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h3>Измерительная игра</h3>
+    <h1>Измерительная игра</h1>
+    <div class="level-select" id="level-select">
+      <h2>Выберите уровень сложности:</h2>
+      <button onclick="startLevel(1)">Уровень 1</button>
+      <button onclick="startLevel(2)">Уровень 2</button>
+      <button onclick="startLevel(3)">Уровень 3</button>
+    </div>
     <div class="question" id="question"></div>
+    <div class="image-wrapper" id="image-wrapper"></div>
     <div class="options" id="options"></div>
     <div class="result" id="result"></div>
   </div>
+
   <script>
-    const questions = [
-      { q: "Какой предмет может быть длиной 15 см?", o: ["Стол", "Карандаш", "Кровать"], a: 1 },
-      { q: "Что из этого около 1 метра?", o: ["Линейка", "Дверь", "Смартфон"], a: 1 },
-      { q: "Что из этого ближе всего к 5 см?", o: ["Монета", "Стул", "Книга"], a: 0 }
-    ];
+    const allQuestions = {
+      1: [
+        {
+          q: "На каком из предметов изображенных на картинке длина около 15 см?",
+          image: "https://example.com/image1.jpg", // замени на свою картинку
+          o: ["Предмет слева", "Предмет по центру", "Предмет справа"],
+          a: 1
+        },
+        {
+          q: "Что из этого ближе к длине 1 метра?",
+          images: [
+            "https://example.com/chair.jpg",
+            "https://example.com/ruler.jpg",
+            "https://example.com/lamp.jpg"
+          ],
+          o: ["Стул", "Линейка", "Лампа"],
+          a: 0
+        },
+        {
+          q: "Что из предметов, изображенных ниже, может быть около 5 см?",
+          images: [
+            "https://example.com/coin.jpg",
+            "https://example.com/table.jpg",
+            "https://example.com/book.jpg"
+          ],
+          o: ["Монета", "Стол", "Книга"],
+          a: 0
+        }
+      ],
+      2: [
+        {
+          q: "Какая из этих линеек 30 см?",
+          images: [
+            "https://example.com/ruler1.jpg",
+            "https://example.com/ruler2.jpg",
+            "https://example.com/ruler3.jpg"
+          ],
+          o: ["Линейка 1", "Линейка 2", "Линейка 3"],
+          a: 2
+        },
+        {
+          q: "На изображении предметы разных размеров. Найди тот, что ближе всего к 1 метру.",
+          image: "https://example.com/image2.jpg",
+          o: ["Крайний левый", "Центральный", "Крайний правый"],
+          a: 2
+        },
+        {
+          q: "Какая из этих бутылок примерно 500 мл?",
+          images: [
+            "https://example.com/bottle1.jpg",
+            "https://example.com/bottle2.jpg",
+            "https://example.com/bottle3.jpg"
+          ],
+          o: ["Бутылка 1", "Бутылка 2", "Бутылка 3"],
+          a: 1
+        }
+      ],
+      3: [
+        {
+          q: "На фото — отрезки. Какой из них 10 см?",
+          image: "https://example.com/lines.jpg",
+          o: ["Первый", "Второй", "Третий"],
+          a: 0
+        },
+        {
+          q: "Что из изображенного ближе всего к 2 метрам?",
+          images: [
+            "https://example.com/tree.jpg",
+            "https://example.com/door.jpg",
+            "https://example.com/bike.jpg"
+          ],
+          o: ["Дерево", "Дверь", "Велосипед"],
+          a: 1
+        },
+        {
+          q: "Выбери предмет длиной около 1 см.",
+          images: [
+            "https://example.com/nail.jpg",
+            "https://example.com/book.jpg",
+            "https://example.com/phone.jpg"
+          ],
+          o: ["Гвоздь", "Книга", "Телефон"],
+          a: 0
+        }
+      ]
+    };
+
+    let level = 1;
     let current = 0;
     let score = 0;
 
+    function startLevel(lvl) {
+      level = lvl;
+      current = 0;
+      score = 0;
+      document.getElementById("level-select").style.display = "none";
+      document.getElementById("result").innerText = "";
+      loadQuestion();
+    }
+
     function loadQuestion() {
+      const questions = allQuestions[level];
       if (current >= questions.length) {
-        document.getElementById("result").innerText = `Вы ответили правильно на ${score} из ${questions.length} вопросов.`;
+        document.getElementById("result").innerText = Вы прошли уровень ${level}. Правильных ответов: ${score} из ${questions.length}.;
         document.getElementById("question").innerText = "";
         document.getElementById("options").innerHTML = "";
+        document.getElementById("image-wrapper").innerHTML = "";
+        document.getElementById("level-select").style.display = "block";
         return;
       }
 
       const q = questions[current];
       document.getElementById("question").innerText = q.q;
-      const options = document.getElementById("options");
-      options.innerHTML = "";
+
+      const imgWrap = document.getElementById("image-wrapper");
+      imgWrap.innerHTML = "";
+
+      // Показываем картинку (одну или несколько)
+      if (q.image) {
+        const img = document.createElement("img");
+        img.src = q.image;
+        img.alt = "Изображение к вопросу";
+        imgWrap.appendChild(img);
+      } else if (q.images) {
+        q.images.forEach(src => {
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = "Вариант";
+          img.style.maxWidth = "30%";
+          img.style.margin = "5px";
+          imgWrap.appendChild(img);
+        });
+      }
+
+      // Кнопки ответов
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
       q.o.forEach((opt, idx) => {
         const btn = document.createElement("button");
         btn.innerText = opt;
@@ -90,13 +231,16 @@
           current++;
           loadQuestion();
         };
-        options.appendChild(btn);
+        optionsDiv.appendChild(btn);
       });
     }
 
     window.onload = () => {
-      loadQuestion();
+      document.getElementById("question").innerText = "";
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("result").innerText = "";
     };
   </script>
 </body>
 </html>
+            
