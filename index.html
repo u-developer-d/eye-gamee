@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Измерительная игра</title>
- <style>
+<style>
   /* Общий стиль для страницы */
   body {
     font-family: 'Arial', sans-serif;
@@ -31,14 +31,14 @@
 
   /* Заголовки */
   h1 {
-    font-size: 42px; /* Увеличенный размер для h1 */
+    font-size: 36px; /* Увеличенный размер для h1 */
     color: #333;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
   h2 {
-    font-size: 32px; /* Увеличенный размер для h2 */
+    font-size: 28px; /* Увеличенный размер для h2 */
     color: #333;
-    margin-bottom: 30px;
+    margin-bottom: 40px; /* Увеличили отступ под заголовком */
   }
 
   /* Вопрос */
@@ -62,7 +62,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 30px; /* Увеличили отступ между кнопками */
     margin-top: 20px;
   }
   .options button {
@@ -98,6 +98,12 @@
   }
 
   /* Кнопки выбора уровня */
+  .level-select {
+    display: flex;
+    flex-direction: column; /* Для мобильной версии */
+    align-items: center;
+    gap: 20px; /* Отступ между кнопками */
+  }
   .level-select button {
     background: linear-gradient(135deg, #8bc34a, #689f38, #43a047); /* Градиент из трех цветов */
     background-size: 400%;
@@ -126,9 +132,15 @@
       padding: 12px 20px;
       font-size: 14px;
     }
+    .level-select {
+      flex-direction: column; /* Располагаем кнопки вертикально */
+      gap: 30px; /* Увеличиваем отступ между кнопками */
+    }
     .level-select button {
       padding: 12px 20px;
       font-size: 14px;
+      width: 100%; /* Ширина кнопок на всю доступную ширину */
+      max-width: 300px; /* Ограничение максимальной ширины */
     }
   }
 </style>
