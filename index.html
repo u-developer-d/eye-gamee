@@ -38,7 +38,7 @@
   h2 {
     font-size: 28px; /* Увеличенный размер для h2 */
     color: #333;
-    margin-bottom: 40px; /* Увеличили отступ под заголовком */
+    margin-bottom: 20px;
   }
 
   /* Вопрос */
@@ -62,7 +62,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 30px; /* Увеличили отступ между кнопками */
+    gap: 20px;
     margin-top: 20px;
   }
   .options button {
@@ -98,12 +98,6 @@
   }
 
   /* Кнопки выбора уровня */
-  .level-select {
-    display: flex;
-    flex-direction: column; /* Для мобильной версии */
-    align-items: center;
-    gap: 20px; /* Отступ между кнопками */
-  }
   .level-select button {
     background: linear-gradient(135deg, #8bc34a, #689f38, #43a047); /* Градиент из трех цветов */
     background-size: 400%;
@@ -132,15 +126,9 @@
       padding: 12px 20px;
       font-size: 14px;
     }
-    .level-select {
-      flex-direction: column; /* Располагаем кнопки вертикально */
-      gap: 30px; /* Увеличиваем отступ между кнопками */
-    }
     .level-select button {
       padding: 12px 20px;
       font-size: 14px;
-      width: 100%; /* Ширина кнопок на всю доступную ширину */
-      max-width: 300px; /* Ограничение максимальной ширины */
     }
   }
 </style>
