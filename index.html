@@ -14,7 +14,14 @@
     text-align: center;
     color: #333;
   }
-
+  /* Стиль для персонажа */
+  #character {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 100px;
+    height: auto;
+  }
   /* Стиль для полного экрана */
   .container {
     display: flex;
@@ -28,7 +35,6 @@
     box-sizing: border-box;
     overflow-x: hidden; /* Убираем горизонтальную прокрутку */
   }
-
   /* Заголовки */
   h1 {
     font-size: 40px; /* Увеличенный размер для h1 */
@@ -40,14 +46,12 @@
     color: #333;
     margin-bottom: 60px;
   }
-
   /* Вопрос */
   .question {
     font-size: 24px;
     margin: 20px 0;
     line-height: 1.5;
   }
-
   /* Изображения */
   .image-wrapper img {
     max-width: 100%;
@@ -56,7 +60,6 @@
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
-
   /* Кнопки выбора ответов */
   .options {
     display: flex;
@@ -88,7 +91,6 @@
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
-
   /* Результат */
   .result {
     font-size: 18px;
@@ -96,27 +98,41 @@
     color: #4CAF50;
     font-weight: bold;
   }
-
-  /* Кнопки выбора уровня */
-  .level-select button {
-    background: linear-gradient(135deg, #8bc34a, #689f38, #43a047); /* Градиент из трех цветов */
-    background-size: 400%;
-    animation: gradient-animation 5s infinite; /* Анимация градиента */
-    color: white;
-    border: none;
-    padding: 14px 24px;
-    border-radius: 24px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold; /* Жирный текст */
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Счетчик очков */
+  #score {
+    font-size: 24px;
+    margin-top: 10px;
   }
-  .level-select button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  /* Индикатор прогресса */
+  #progress {
+    width: 100%;
+    height: 10px;
+    background-color: lightgray;
+    margin: 10px 0;
   }
-
+  #progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: blue;
+    transition: width 0.5s ease;
+  }
+  /* Анимации кнопок */
+  .correct {
+    animation: correct-animation 0.5s ease;
+  }
+  .incorrect {
+    animation: incorrect-animation 0.5s ease;
+  }
+  @keyframes correct-animation {
+    0% { transform: scale(1); background-color: green; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  @keyframes incorrect-animation {
+    0% { transform: scale(1); background-color: red; }
+    50% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+  }
   /* Адаптивность */
   @media (max-width: 768px) {
     .question {
@@ -126,16 +142,19 @@
       padding: 12px 20px;
       font-size: 14px;
     }
-    .level-select button {
-      padding: 12px 20px;
-      font-size: 14px;
-    }
   }
 </style>
 </head>
 <body>
   <div class="container">
     <h1>Глазомер</h1>
+    <div id="character">
+      <img src="https://example.com/robot_happy.png" alt="Персонаж" id="character-image">
+    </div>
+    <div id="score">Очки: 0</div>
+    <div id="progress">
+      <div id="progress-bar"></div>
+    </div>
     <div class="level-select" id="level-select">
       <h2>Выберите уровень сложности:</h2>
       <button onclick="startLevel(1)">Начальный</button>
@@ -147,7 +166,6 @@
     <div class="options" id="options"></div>
     <div class="result" id="result"></div>
   </div>
-
   <script>
     const allQuestions = {
       1: [
@@ -240,53 +258,66 @@
     let current = 0;
     let score = 0;
 
-    function preloadImages(questions) {
-  return new Promise((resolve) => {
-    const imagesToLoad = [];
-    questions.forEach(q => {
-      if (q.image) {
-        imagesToLoad.push(q.image);
+    function updateCharacter(emotion) {
+      const characterImg = document.getElementById("character-image");
+      if (emotion === "happy") {
+        characterImg.src = "https://example.com/robot_happy.png";
+      } else if (emotion === "sad") {
+        characterImg.src = "https://example.com/robot_sad.png";
       }
-      if (q.images) {
-        imagesToLoad.push(...q.images);
-      }
-    });
+    }
 
-    const loadedImages = [];
-    const totalImages = imagesToLoad.length;
+    function updateScore() {
+      document.getElementById("score").innerText = `Очки: ${score}`;
+    }
 
-    imagesToLoad.forEach(src => {
-      const img = new Image();
-      img.onload = () => {
-        loadedImages.push(src);
-        if (loadedImages.length === totalImages) {
-          resolve(); // Все изображения загружены
-        }
-      };
-      img.onerror = () => {
-        console.error(`Не удалось загрузить изображение: ${src}`);
-        loadedImages.push(src); // Продолжаем даже если какое-то изображение не загрузилось
-        if (loadedImages.length === totalImages) {
-          resolve(); // Все изображения обработаны
-        }
-      };
-      img.src = src;
-    });
-  });
-}
+    function updateProgressBar() {
+      const progress = (current / allQuestions[level].length) * 100;
+      document.getElementById("progress-bar").style.width = `${progress}%`;
+    }
 
     async function startLevel(lvl) {
-  level = lvl;
-  current = 0;
-  score = 0;
-  document.getElementById("level-select").style.display = "none";
-  document.getElementById("result").innerText = "";
+      level = lvl;
+      current = 0;
+      score = 0;
+      document.getElementById("level-select").style.display = "none";
+      document.getElementById("result").innerText = "";
+      await preloadImages(allQuestions[level]);
+      loadQuestion();
+    }
 
-  // Пре-загрузка изображений для выбранного уровня
-  await preloadImages(allQuestions[level]);
-
-  loadQuestion();
-}
+    function preloadImages(questions) {
+      return new Promise((resolve) => {
+        const imagesToLoad = [];
+        questions.forEach(q => {
+          if (q.image) {
+            imagesToLoad.push(q.image);
+          }
+          if (q.images) {
+            imagesToLoad.push(...q.images);
+          }
+        });
+        const loadedImages = [];
+        const totalImages = imagesToLoad.length;
+        imagesToLoad.forEach(src => {
+          const img = new Image();
+          img.onload = () => {
+            loadedImages.push(src);
+            if (loadedImages.length === totalImages) {
+              resolve(); // Все изображения загружены
+            }
+          };
+          img.onerror = () => {
+            console.error(`Не удалось загрузить изображение: ${src}`);
+            loadedImages.push(src); // Продолжаем даже если какое-то изображение не загрузилось
+            if (loadedImages.length === totalImages) {
+              resolve(); // Все изображения обработаны
+            }
+          };
+          img.src = src;
+        });
+      });
+    }
 
     function loadQuestion() {
       const questions = allQuestions[level];
@@ -298,13 +329,10 @@
         document.getElementById("level-select").style.display = "block";
         return;
       }
-
       const q = questions[current];
       document.getElementById("question").innerText = q.q;
-
       const imgWrap = document.getElementById("image-wrapper");
       imgWrap.innerHTML = "";
-
       if (q.image) {
         const img = document.createElement("img");
         img.src = q.image;
@@ -320,15 +348,25 @@
           imgWrap.appendChild(img);
         });
       }
-
       const optionsDiv = document.getElementById("options");
       optionsDiv.innerHTML = "";
       q.o.forEach((opt, idx) => {
         const btn = document.createElement("button");
         btn.innerText = opt;
         btn.onclick = () => {
-          if (idx === q.a) score++;
+          if (idx === q.a) {
+            score++;
+            updateCharacter("happy");
+            btn.classList.add("correct");
+            setTimeout(() => btn.classList.remove("correct"), 500);
+          } else {
+            updateCharacter("sad");
+            btn.classList.add("incorrect");
+            setTimeout(() => btn.classList.remove("incorrect"), 500);
+          }
           current++;
+          updateScore();
+          updateProgressBar();
           loadQuestion();
         };
         optionsDiv.appendChild(btn);
