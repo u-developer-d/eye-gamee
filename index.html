@@ -240,14 +240,53 @@
     let current = 0;
     let score = 0;
 
-    function startLevel(lvl) {
-      level = lvl;
-      current = 0;
-      score = 0;
-      document.getElementById("level-select").style.display = "none";
-      document.getElementById("result").innerText = "";
-      loadQuestion();
-    }
+    function preloadImages(questions) {
+  return new Promise((resolve) => {
+    const imagesToLoad = [];
+    questions.forEach(q => {
+      if (q.image) {
+        imagesToLoad.push(q.image);
+      }
+      if (q.images) {
+        imagesToLoad.push(...q.images);
+      }
+    });
+
+    const loadedImages = [];
+    const totalImages = imagesToLoad.length;
+
+    imagesToLoad.forEach(src => {
+      const img = new Image();
+      img.onload = () => {
+        loadedImages.push(src);
+        if (loadedImages.length === totalImages) {
+          resolve(); // Все изображения загружены
+        }
+      };
+      img.onerror = () => {
+        console.error(`Не удалось загрузить изображение: ${src}`);
+        loadedImages.push(src); // Продолжаем даже если какое-то изображение не загрузилось
+        if (loadedImages.length === totalImages) {
+          resolve(); // Все изображения обработаны
+        }
+      };
+      img.src = src;
+    });
+  });
+}
+
+    async function startLevel(lvl) {
+  level = lvl;
+  current = 0;
+  score = 0;
+  document.getElementById("level-select").style.display = "none";
+  document.getElementById("result").innerText = "";
+
+  // Пре-загрузка изображений для выбранного уровня
+  await preloadImages(allQuestions[level]);
+
+  loadQuestion();
+}
 
     function loadQuestion() {
       const questions = allQuestions[level];
