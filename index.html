@@ -179,10 +179,54 @@
       font-size: 14px;
     }
   }
+  /* Кнопка 'Назад' */
+#back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  border: 2px solid #333;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#back-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-135deg); /* Изменяем угол стрелки */
+  width: 16px;
+  height: 16px;
+  border-top: 3px solid #333;
+  border-left: 3px solid #333;
+}
+
+#back-button:hover {
+  transform: scale(1.1);
+  border-color: #ff6600;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  #back-button {
+    width: 30px;
+    height: 30px;
+  }
+  #back-button::before {
+    width: 12px;
+    height: 12px;
+  }
+}
 </style>
 </head>
 <body>
   <div class="container">
+    <a href="/" id="back-button"></a>
     <h1>Глазомер</h1>
     <div id="character">
       <img src="happyChild.png" alt="Персонаж" id="character-image">
@@ -428,6 +472,12 @@
         optionsDiv.appendChild(btn);
       });
     }
+
+    document.getElementById("back-button").addEventListener("click", function(event) {
+  if (!confirm("Вы уверены, что хотите покинуть игру?")) {
+    event.preventDefault(); // Отменяем переход, если пользователь нажмет "Отмена"
+  }
+});
 
     window.onload = () => {
       document.getElementById("level-select").style.display = "block";
