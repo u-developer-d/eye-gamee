@@ -210,13 +210,20 @@
 #back-button::after {
   content: ""; /* Создаем второй псевдоэлемент */
   position: absolute;
-  right: -8px; /* Смещаем треугольник вправо от линии */
+  right: -8px; /* Смещаем треугольник относительно линии */
   top: 50%; /* Центрируем по вертикали */
   transform: translateY(-50%) rotate(45deg); /* Поворачиваем треугольник */
   width: 8px; /* Размер треугольника */
   height: 8px; /* Размер треугольника */
   background-color: #333; /* Цвет треугольника */
   clip-path: polygon(0 0, 100% 0, 50% 100%); /* Создаем форму треугольника */
+}
+
+/* Оборачиваем всё в один блок */
+#back-button::before,
+#back-button::after {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* Эффект при наведении */
