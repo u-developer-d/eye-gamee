@@ -184,8 +184,8 @@
   position: absolute;
   top: 20px;
   left: 20px;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   background-color: #fff;
   border: 2px solid #333;
   border-radius: 50%; /* Круглая форма */
@@ -204,13 +204,13 @@
   height: 0; /* Высота стрелки */
   border-top: 8px solid transparent; /* Верхняя граница (прозрачная) */
   border-bottom: 8px solid transparent; /* Нижняя граница (прозрачная) */
-  border-right: 12px solid #333; /* Правая граница (создает стрелку) */
+  border-right: 12px solid #ff9900; /* Правая граница (создает стрелку) */
 }
 
 /* Эффект при наведении */
 #back-button:hover {
   background-color: #f0f0f0; /* Более светлый фон при наведении */
-  border-color: #ff6600; /* Яркая граница при наведении */
+  border-color: #ff9900; /* Яркая граница при наведении */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
 }
 
@@ -266,33 +266,57 @@
   <script>
     const allQuestions = {
       1: [
-        {
-          q: "На каком из предметов изображенных на картинке длина около 15 см?",
-          image: "https://example.com/image1.jpg",
-          o: ["Предмет слева", "Предмет по центру", "Предмет справа"],
-          a: 1
-        },
-        {
-          q: "Что из этого ближе к длине 1 метра?",
-          images: [
-            "https://example.com/chair.jpg",
-            "https://example.com/ruler.jpg",
-            "https://example.com/lamp.jpg"
-          ],
-          o: ["Стул", "Линейка", "Лампа"],
-          a: 0
-        },
-        {
-          q: "Что из предметов, изображенных ниже, может быть около 5 см?",
-          images: [
-            "https://example.com/coin.jpg",
-            "https://example.com/table.jpg",
-            "https://example.com/book.jpg"
-          ],
-          o: ["Монета", "Стол", "Книга"],
-          a: 0
-        }
-      ],
+  {
+    q: "Какой из этих предметов можно измерить линейкой?",
+    images: [
+      "https://www.istockphoto.com/photo/red-apple-gm157482029-22943524",
+      "https://unsplash.com/photos/white-car-parked-on-the-side-of-the-road-1H30uRC1plc",
+      "https://www.istockphoto.com/photo/yellow-pencil-gm157482029-22943524"
+    ],
+    o: ["Яблоко", "Машина", "Карандаш"],
+    a: 2
+  },
+  {
+    q: "Что из этого примерно 1 метр в длину?",
+    images: [
+      "https://www.istockphoto.com/photo/teddy-bear-gm157482029-22943524",
+      "https://www.istockphoto.com/photo/wooden-ruler-gm157482029-22943524",
+      "https://www.istockphoto.com/photo/park-bench-gm157482029-22943524"
+    ],
+    o: ["Плюшевый мишка", "Линейка", "Скамейка"],
+    a: 2
+  },
+  {
+    q: "Какой из предметов можно назвать маленьким (около 5 см)?",
+    images: [
+      "https://www.istockphoto.com/photo/eraser-gm157482029-22943524",
+      "https://www.istockphoto.com/photo/school-bag-gm157482029-22943524",
+      "https://unsplash.com/photos/pair-of-shoes-on-white-surface-1H30uRC1plc"
+    ],
+    o: ["Ластик", "Рюкзак", "Ботинок"],
+    a: 0
+  },
+  {
+    q: "Что легче всего по весу?",
+    images: [
+      "https://www.istockphoto.com/photo/soccer-ball-gm157482029-22943524",
+      "https://www.istockphoto.com/photo/feather-gm157482029-22943524",
+      "https://www.istockphoto.com/photo/open-book-gm157482029-22943524"
+    ],
+    o: ["Мяч", "Перо", "Книга"],
+    a: 1
+  },
+  {
+    q: "Какой из этих предметов помещается в стакан?",
+    images: [
+      "https://www.istockphoto.com/photo/toy-car-gm157482029-22943524",
+      "https://www.istockphoto.com/photo/red-apple-gm157482029-22943524",
+      "https://unsplash.com/photos/banana-on-white-surface-1H30uRC1plc"
+    ],
+    o: ["Игрушечная машинка", "Яблоко", "Банан"],
+    a: 0
+  }
+],
       2: [
         {
           q: "Какая из этих линеек 30 см?",
