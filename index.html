@@ -199,31 +199,12 @@
 
 /* Создаем стрелку внутри кнопки */
 #back-button::before {
-  content: ""; /* Создаем первый псевдоэлемент */
-  position: relative;
-  width: 16px; /* Общая ширина стрелки с линией */
-  height: 2px; /* Толщина линии */
-  background-color: #333; /* Цвет линии */
-}
-
-/* Добавляем треугольник к линии */
-#back-button::after {
-  content: ""; /* Создаем второй псевдоэлемент */
-  position: absolute;
-  right: -8px; /* Смещаем треугольник относительно линии */
-  top: 50%; /* Центрируем по вертикали */
-  transform: translateY(-50%) rotate(45deg); /* Поворачиваем треугольник */
-  width: 8px; /* Размер треугольника */
-  height: 8px; /* Размер треугольника */
-  background-color: #333; /* Цвет треугольника */
-  clip-path: polygon(0 0, 100% 0, 50% 100%); /* Создаем форму треугольника */
-}
-
-/* Оборачиваем всё в один блок */
-#back-button::before,
-#back-button::after {
-  display: inline-block;
-  vertical-align: middle;
+  content: ""; /* Создаем псевдоэлемент */
+  width: 0; /* Ширина стрелки */
+  height: 0; /* Высота стрелки */
+  border-top: 8px solid transparent; /* Верхняя граница (прозрачная) */
+  border-bottom: 8px solid transparent; /* Нижняя граница (прозрачная) */
+  border-right: 12px solid #333; /* Правая граница (создает стрелку) */
 }
 
 /* Эффект при наведении */
@@ -242,13 +223,23 @@
     left: 15px;
   }
   #back-button::before {
-    width: 12px; /* Уменьшаем длину линии */
-    height: 2px; /* Сохраняем толщину линии */
+    border-top: 6px solid transparent; /* Уменьшаем размер стрелки */
+    border-bottom: 6px solid transparent;
+    border-right: 9px solid #333;
   }
-  #back-button::after {
-    right: -6px; /* Корректируем положение треугольника */
-    width: 6px; /* Уменьшаем размер треугольника */
-    height: 6px; /* Уменьшаем размер треугольника */
+}
+
+@media (max-width: 480px) {
+  #back-button {
+    width: 25px;
+    height: 25px;
+    top: 10px;
+    left: 10px;
+  }
+  #back-button::before {
+    border-top: 5px solid transparent; /* Дополнительно уменьшаем размер стрелки */
+    border-bottom: 5px solid transparent;
+    border-right: 7px solid #333;
   }
 }
 </style>
