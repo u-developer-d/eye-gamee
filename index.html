@@ -14,7 +14,7 @@
     text-align: center;
     color: #333;
   }
-  /* Стиль для персонажа 
+  /* Стиль для персонажа */
   #character {
     position: absolute;
     top: 20px;
@@ -25,37 +25,17 @@
   #character img {
     max-width: 100%;
     height: auto;
-    border-radius: 50%; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
-  }*/
-
-
-/* Стиль для персонажа */
-  #character {
-    position: absolute; /* Абсолютное позиционирование */
-    top: 20px; /* Расстояние от верха экрана */
-    right: 20px; /* Расстояние от правого края экрана */
-    width: 120px; /* Фиксированная ширина */
-    height: auto; /* Высота подстраивается автоматически */
-    z-index: 10; /* Персонаж находится поверх других элементов */
-  }
-
-  #character img {
-    max-width: 100%; /* Изображение не выходит за пределы блока */
-    height: auto; /* Сохраняем пропорции */
-    border-radius: 50%; /* Округляем углы (если нужно) */
+    border-radius: 50%; /* Округляем углы */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Легкая тень */
   }
-
-  /* Адаптивность для маленьких экранов */
+  /* Адаптивность для персонажа */
   @media (max-width: 768px) {
     #character {
-      top: 10px; /* Уменьшаем расстояние от верха */
-      right: 10px; /* Уменьшаем расстояние от правого края */
-      width: 80px; /* Уменьшаем размер персонажа */
+      top: 10px;
+      right: 10px;
+      width: 80px;
     }
   }
-
   /* Стиль для полного экрана */
   .container {
     display: flex;
@@ -151,6 +131,40 @@
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
+  /* Стиль для кружочков */
+  #progress-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  .progress-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ccc; /* Серый цвет по умолчанию */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  .progress-circle.correct {
+    background-color: #4CAF50; /* Зеленый цвет для правильных ответов */
+  }
+  .progress-circle.incorrect {
+    background-color: #F44336; /* Красный цвет для неправильных ответов */
+  }
+  /* Адаптивность для кружочков */
+  @media (max-width: 768px) {
+    .progress-circle {
+      width: 25px;
+      height: 25px;
+      font-size: 12px;
+    }
+  }
   /* Адаптивность */
   @media (max-width: 768px) {
     .question {
@@ -171,7 +185,7 @@
   <div class="container">
     <h1>Глазомер</h1>
     <div id="character">
-      <img src="happyChild.png" alt="Персонаж" id="character-image">
+      <img src="happyKid.png" alt="Персонаж" id="character-image">
     </div>
     <div id="progress-indicator"></div>
     <div class="level-select" id="level-select">
@@ -282,15 +296,26 @@
       if (!characterImg) return;
 
       if (emotion === "happy") {
-        characterImg.src = "happyChild.png";
+        characterImg.src = "happyKid.png";
       } else if (emotion === "sad") {
-        characterImg.src = "sadChild.png";
+        characterImg.src = "sadKid.png";
       }
 
       characterImg.onerror = () => {
         console.error("Не удалось загрузить изображение:", characterImg.src);
         characterImg.src = "defaultKid.png"; // Заглушка
       };
+    }
+
+    function createProgressCircles(questionsCount) {
+      const progressIndicator = document.getElementById("progress-indicator");
+      progressIndicator.innerHTML = ""; // Очищаем предыдущие кружочки
+      for (let i = 0; i < questionsCount; i++) {
+        const circle = document.createElement("div");
+        circle.className = "progress-circle";
+        circle.innerText = i + 1; // Номер задания
+        progressIndicator.appendChild(circle);
+      }
     }
 
     function updateProgressCircle(index, isCorrect) {
@@ -310,14 +335,8 @@
       document.getElementById("level-select").style.display = "none";
       document.getElementById("result").innerText = "";
 
-      const progressIndicator = document.getElementById("progress-indicator");
-      progressIndicator.innerHTML = "";
-      for (let i = 0; i < allQuestions[level].length; i++) {
-        const circle = document.createElement("div");
-        circle.className = "progress-circle";
-        circle.innerText = i + 1;
-        progressIndicator.appendChild(circle);
-      }
+      // Создаем кружочки для прогресса
+      createProgressCircles(allQuestions[level].length);
 
       await preloadImages(allQuestions[level]);
       loadQuestion();
@@ -400,7 +419,9 @@
             setTimeout(() => btn.classList.remove("incorrect"), 500);
           }
 
+          // Обновляем состояние кружочка
           updateProgressCircle(current, isCorrect);
+
           current++;
           loadQuestion();
         };
