@@ -179,7 +179,7 @@
       font-size: 14px;
     }
   }
-  /* Кнопка 'Назад' */
+  /* Стиль для кнопки 'Назад' */
 #back-button {
   position: absolute;
   top: 20px;
@@ -188,27 +188,30 @@
   height: 40px;
   background-color: #fff;
   border: 2px solid #333;
-  border-radius: 50%;
+  border-radius: 50%; /* Круглая форма */
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex; /* Добавляем flex для центрирования стрелки */
+  justify-content: center; /* Центрируем содержимое горизонтально */
+  align-items: center; /* Центрируем содержимое вертикально */
 }
 
+/* Создаем стрелку внутри кнопки */
 #back-button::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-135deg); /* Изменяем угол стрелки */
-  width: 16px;
-  height: 16px;
-  border-top: 3px solid #333;
-  border-left: 3px solid #333;
+  content: ""; /* Создаем псевдоэлемент */
+  width: 16px; /* Ширина стрелки */
+  height: 16px; /* Высота стрелки */
+  border-top: 3px solid #333; /* Верхняя граница для создания стрелки */
+  border-left: 3px solid #333; /* Левая граница для создания стрелки */
+  transform: rotate(-135deg); /* Поворачиваем стрелку */
 }
 
+/* Эффект при наведении */
 #back-button:hover {
-  transform: scale(1.1);
-  border-color: #ff6600;
+  background-color: #f0f0f0; /* Более светлый фон при наведении */
+  border-color: #ff6600; /* Яркая граница при наведении */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Немного увеличиваем тень */
 }
 
 /* Адаптивность */
@@ -220,6 +223,7 @@
   #back-button::before {
     width: 12px;
     height: 12px;
+    border-width: 2px; /* Уменьшаем толщину границы */
   }
 }
 </style>
