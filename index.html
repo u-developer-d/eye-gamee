@@ -185,7 +185,7 @@
   <div class="container">
     <h1>Глазомер</h1>
     <div id="character">
-      <img src="happyKid.png" alt="Персонаж" id="character-image">
+      <img src="happyChild.png" alt="Персонаж" id="character-image">
     </div>
     <div id="progress-indicator"></div>
     <div class="level-select" id="level-select">
@@ -296,9 +296,9 @@
       if (!characterImg) return;
 
       if (emotion === "happy") {
-        characterImg.src = "happyKid.png";
+        characterImg.src = "happyChild.png";
       } else if (emotion === "sad") {
-        characterImg.src = "sadKid.png";
+        characterImg.src = "sadChild.png";
       }
 
       characterImg.onerror = () => {
