@@ -28,7 +28,7 @@
     opacity: 0.8;
     /*border: 3px solid #FFA0B8;*/
     border-radius: 50%; /* Округляем углы */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    box-shadow: 0 4px 12px #ffffff; /* Легкая тень rgba(0, 0, 0, 0.1)*/
   }
   /* Адаптивность для персонажа */
   @media (max-width: 768px) {
@@ -195,7 +195,7 @@
   border-radius: 50%; /* Круглая форма */
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px #ffffff; /*rgba(0, 0, 0, 0.1)*/
   display: flex; /* Для центрирования стрелки */
   justify-content: center; /* Центрируем содержимое горизонтально */
   align-items: center; /* Центрируем содержимое вертикально */
@@ -209,7 +209,7 @@
   height: 0; /* Высота стрелки */
   border-top: 10px solid transparent; /* Верхняя граница (прозрачная) */
   border-bottom: 10px solid transparent; /* Нижняя граница (прозрачная) */
-  border-right: 14px solid #F45EAC; /* Правая граница (создает стрелку) */
+  border-right: 14px solid #FFA0B8; /* Правая граница (создает стрелку) */
 }
 
 /* Эффект при наведении */
@@ -228,9 +228,9 @@
     left: 15px;
   }
   #back-button::before {
-    border-top: 8px solid transparent; /* Уменьшаем размер стрелки */
-    border-bottom: 8px solid transparent;
-    border-right: 11px solid #F45EAC;
+    border-top: 9px solid transparent; /* Уменьшаем размер стрелки */
+    border-bottom: 9px solid transparent;
+    border-right: 12px solid #F45EAC;
   }
 }
 
@@ -242,9 +242,9 @@
     left: 10px;
   }
   #back-button::before {
-    border-top: 7px solid transparent; /* Дополнительно уменьшаем размер стрелки */
-    border-bottom: 7px solid transparent;
-    border-right: 9px solid #F45EAC;
+    border-top: 8px solid transparent; /* Дополнительно уменьшаем размер стрелки */
+    border-bottom: 8px solid transparent;
+    border-right: 10px solid #F45EAC;
   }
 }
 </style>
